@@ -8,3 +8,15 @@ Instructions for setting up your Raspberry Pi to accept the LCD1602, as well as 
 Build a timer that requests minutes from the user and starts a countdown displayed on the LCD1602. You can customize your header tag from Pi Timer to something else as well.
 
 ![image](02-Timer/timer.jpg)
+
+## (3) Weather Clock
+Coming soon... 
+
+## (4) News Headline Scroller
+Coming soon...
+
+## (5) Stock Ticker
+Coming soon...
+
+## (6) Live Sports Scores
+Coming soon...
