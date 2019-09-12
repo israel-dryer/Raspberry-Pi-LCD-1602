@@ -8,7 +8,7 @@
 ####
 ##############################################################################
 from PCF8574 import PCF8574_GPIO
-from Adafruit_LCD1602 import Adafruit_CharLCD
+from Adafruit_LCD1602_IDD import Adafruit_CharLCD
 from bs4 import BeautifulSoup
 from time import sleep
 import requests
@@ -23,7 +23,7 @@ def get_html_data(index_list, url):
     for x in index:
         new_url = url.format(x, x)
         r = requests.get(new_url)
-        html_data[x] = r.text    
+        html_data[x] = r.text
     return html_data
 
 def parse_html(html_data):
@@ -44,8 +44,8 @@ def parse_html(html_data):
 def formatter(data_row):
     # format the stock data and return 2 lines for printing to lcd
     stock, price, change_amt, change_pct, last_update = data_row
-    line1 = stock + ' : ' + last_update 
-    line2 = '{} {} {}'.format(price, change_amt, change_pct)
+    line1 = stock
+    line2 = '{} {}'.format(price, change_amt)
     return line1, line2
 
 
@@ -57,17 +57,16 @@ def loop():
         # retrieve and parse stock-index prices
         html_data = get_html_data(index, url)
         stock_ticker_data = parse_html(html_data)
-        
+
         for stock in stock_ticker_data:
             line1, line2 = formatter(stock)
 
             # display message
-            seconds -=1
-            lcd.setCursor(0,0)  # set cursor position
+            lcd.set_cursor(0,0)  # set cursor position
             lcd.message(line1 + '\n')
-            lcd.message(line2) 
+            lcd.message(line2)
             sleep(5)
-        
+
     lcd.message('Time is Up!')
 
 def destroy():
@@ -90,9 +89,8 @@ lcd = Adafruit_CharLCD(pin_rs=0, pin_e=2, pins_db=[4,5,6,7], GPIO=mcp)
 
 if __name__ == '__main__':
     print ('Program is starting ... ')
-   
+
     try:
         loop()
     except KeyboardInterrupt:
         destroy()
-
