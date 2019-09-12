@@ -81,25 +81,27 @@ class Adafruit_CharLCD(object):
         self.clear()
 
     def begin(self, cols, lines):
-        if (lines > 1):
-            self.numlines = lines
+        self.numlines = lines
+        if lines > 1:
             self.displayfunction |= self.LCD_2LINE
+        else:
+            self.displayfunction |= self.LCD_1LINE
 
     def home(self):
         self.write4bits(self.LCD_RETURNHOME)  # set cursor position to zero
-        self.delayMicroseconds(3000)  # this command takes a long time!
+        self.delay_microseconds(3000)  # this command takes a long time!
 
     def clear(self):
         self.write4bits(self.LCD_CLEARDISPLAY)  # command to clear display
-        self.delayMicroseconds(3000)  # 3000 microsecond sleep, clearing the display takes a long time
+        self.delay_microseconds(3000)  # 3000 microsecond sleep, clearing the display takes a long time
 
-    def setCursor(self, col, row):
+    def set_cursor(self, col, row):
         self.row_offsets = [0x00, 0x40, 0x14, 0x54]
         if row > self.numlines:
             row = self.numlines - 1  # we count rows starting w/0
         self.write4bits(self.LCD_SETDDRAMADDR | (col + self.row_offsets[row]))
 
-    def noDisplay(self):
+    def no_display(self):
         """ Turn the display off (quickly) """
         self.displaycontrol &= ~self.LCD_DISPLAYON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
@@ -109,7 +111,7 @@ class Adafruit_CharLCD(object):
         self.displaycontrol |= self.LCD_DISPLAYON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
 
-    def noCursor(self):
+    def no_cursor(self):
         """ Turns the underline cursor off """
         self.displaycontrol &= ~self.LCD_CURSORON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
@@ -119,7 +121,7 @@ class Adafruit_CharLCD(object):
         self.displaycontrol |= self.LCD_CURSORON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
 
-    def noBlink(self):
+    def no_blink(self):
         """ Turn the blinking cursor off """
         self.displaycontrol &= ~self.LCD_BLINKON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
@@ -129,20 +131,20 @@ class Adafruit_CharLCD(object):
         self.displaycontrol |= self.LCD_BLINKON
         self.write4bits(self.LCD_DISPLAYCONTROL | self.displaycontrol)
 
-    def DisplayLeft(self):
+    def display_left(self):
         """ These commands scroll the display without changing the RAM """
         self.write4bits(self.LCD_CURSORSHIFT | self.LCD_DISPLAYMOVE | self.LCD_MOVELEFT)
 
-    def scrollDisplayRight(self):
+    def scroll_display_right(self):
         """ These commands scroll the display without changing the RAM """
         self.write4bits(self.LCD_CURSORSHIFT | self.LCD_DISPLAYMOVE | self.LCD_MOVERIGHT)
 
-    def leftToRight(self):
+    def left_to_right(self):
         """ This is for text that flows Left to Right """
         self.displaymode |= self.LCD_ENTRYLEFT
         self.write4bits(self.LCD_ENTRYMODESET | self.displaymode)
 
-    def rightToLeft(self):
+    def right_to_left(self):
         """ This is for text that flows Right to Left """
         self.displaymode &= ~self.LCD_ENTRYLEFT
         self.write4bits(self.LCD_ENTRYMODESET | self.displaymode)
@@ -152,14 +154,14 @@ class Adafruit_CharLCD(object):
         self.displaymode |= self.LCD_ENTRYSHIFTINCREMENT
         self.write4bits(self.LCD_ENTRYMODESET | self.displaymode)
 
-    def noAutoscroll(self):
+    def no_autoscroll(self):
         """ This will 'left justify' text from the cursor """
         self.displaymode &= ~self.LCD_ENTRYSHIFTINCREMENT
         self.write4bits(self.LCD_ENTRYMODESET | self.displaymode)
 
     def write4bits(self, bits, char_mode=False):
         """ Send command to LCD """
-        self.delayMicroseconds(1000)  # 1000 microsecond sleep
+        self.delay_microseconds(1000)  # 1000 microsecond sleep
         bits = bin(bits)[2:].zfill(8)
         self.GPIO.output(self.pin_rs, char_mode)
         for pin in self.pins_db:
@@ -167,30 +169,26 @@ class Adafruit_CharLCD(object):
         for i in range(4):
             if bits[i] == "1":
                 self.GPIO.output(self.pins_db[::-1][i], True)
-        self.pulseEnable()
+        self.pulse_enable()
         for pin in self.pins_db:
             self.GPIO.output(pin, False)
         for i in range(4, 8):
             if bits[i] == "1":
                 self.GPIO.output(self.pins_db[::-1][i-4], True)
-        self.pulseEnable()
+        self.pulse_enable()
 
-    def delayMicroseconds(self, microseconds):
+    def delay_microseconds(self, microseconds):
         seconds = microseconds / float(1000000)  # divide microseconds by 1 million for seconds
         sleep(seconds)
 
-    def pulseEnable(self):
+    def pulse_enable(self):
         self.GPIO.output(self.pin_e, False)
-        self.delayMicroseconds(1)       # 1 microsecond pause - enable pulse must be > 450ns
+        self.delay_microseconds(1)       # 1 microsecond pause - enable pulse must be > 450ns
         self.GPIO.output(self.pin_e, True)
-        self.delayMicroseconds(1)       # 1 microsecond pause - enable pulse must be > 450ns
+        self.delay_microseconds(1)       # 1 microsecond pause - enable pulse must be > 450ns
         self.GPIO.output(self.pin_e, False)
-        self.delayMicroseconds(1)       # commands need > 37us to settle
+        self.delay_microseconds(1)       # commands need > 37us to settle
         
-    def sleep(self, seconds):
-        """ sleep time """
-        sleep(seconds)
-
     def message(self, text):
         """ Send string to LCD. Newline wraps to second line"""
         for char in text:
