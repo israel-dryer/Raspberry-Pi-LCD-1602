@@ -1,14 +1,17 @@
-##############################################################################
-###
-#   Filename    :   stock_index.py
-#   Author      :   Israel Dryer
-#   Written     :   2019-09-12
-#   Purpose     :   Extract stock-index prices from yahoo finance and update
-###                 an LCD display attached to the Raspberry Pi
-####
-##############################################################################
-from PCF8574 import PCF8574_GPIO
-from Adafruit_LCD1602_IDD import Adafruit_CharLCD
+######################################################################
+#   Filename      : stock_ticker.py
+#   Description   : Display stock-index prices from yahoo finance
+#   Author        : Israel Dryer
+#   Modified      : 2019-09-14
+######################################################################
+#
+#   Install the required libraries
+#   https://rplcd.readthedocs.io/en/stable/getting_started.html#
+#   sudo pip3 install RPLCD
+#   sudo pip3 install smbus
+#
+######################################################################
+from RPLCD.i2c import CharLCD
 from bs4 import BeautifulSoup
 from time import sleep
 import requests
@@ -47,9 +50,9 @@ def formatter(data_row):
     line1 = stock
     line2 = '{} {}'.format(price, change_amt)
     return line1, line2
-    
+
 def loop():
-    
+
     while True:
         # retrieve and parse stock-index prices
         html_data = get_html_data(index, url)
@@ -62,9 +65,9 @@ def loop():
             lcd.home()
             lcd.clear()
             lcd.write_string(line1 + '\n\r')
-            lcd.write_string(line2) 
+            lcd.write_string(line2)
             sleep(5)
-        
+
 # create LCD
 lcd = CharLCD(i2c_expander='PCF8574', address=0x27)
 
@@ -73,7 +76,7 @@ if __name__ == '__main__':
     lcd.clear()
     lcd.home()
     lcd.write_string('Loading...')
-    
+
     try:
         loop()
     except:
