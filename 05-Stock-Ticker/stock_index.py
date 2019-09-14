@@ -55,7 +55,6 @@ def loop():
         html_data = get_html_data(index, url)
         stock_ticker_data = parse_html(html_data)
 
-<<<<<<< HEAD
         # write message
         for stock in stock_ticker_data:
             line1, line2 = formatter(stock)
@@ -81,41 +80,3 @@ if __name__ == '__main__':
         KeyboardInterrupt
         lcd.clear()
         lcd.close()
-=======
-        for stock in stock_ticker_data:
-            line1, line2 = formatter(stock)
-
-            # display message
-            lcd.set_cursor(0,0)  # set cursor position
-            lcd.message(line1 + '\n')
-            lcd.message(line2)
-            sleep(5)
-
-    lcd.message('Time is Up!')
-
-def destroy():
-    lcd.clear()
-
-PCF8574_address = 0x27  # I2C address of the PCF8574 chip.
-PCF8574A_address = 0x3F  # I2C address of the PCF8574A chip.
-# Create PCF8574 GPIO adapter.
-try:
-	mcp = PCF8574_GPIO(PCF8574_address)
-except:
-	try:
-		mcp = PCF8574_GPIO(PCF8574A_address)
-	except:
-		print ('I2C Address Error !')
-		exit(1)
-
-# Create LCD, passing in MCP GPIO adapter.
-lcd = Adafruit_CharLCD(pin_rs=0, pin_e=2, pins_db=[4,5,6,7], GPIO=mcp)
-
-if __name__ == '__main__':
-    print ('Program is starting ... ')
-
-    try:
-        loop()
-    except KeyboardInterrupt:
-        destroy()
->>>>>>> 59355d441c10fc702dc4524d8ca2f1a72854f60d
