@@ -1,17 +1,14 @@
-######################################################################
-#   Filename      : stock_ticker.py
-#   Description   : Display stock-index prices from yahoo finance 
-#   Author        : Israel Dryer
-#   Modified      : 2019-09-14
-######################################################################
-#
-#   Install the required libraries
-#   https://rplcd.readthedocs.io/en/stable/getting_started.html# 
-#   sudo pip3 install RPLCD 
-#   sudo pip3 install smbus
-#
-######################################################################
-from RPLCD.i2c import CharLCD
+##############################################################################
+###
+#   Filename    :   stock_index.py
+#   Author      :   Israel Dryer
+#   Written     :   2019-09-12
+#   Purpose     :   Extract stock-index prices from yahoo finance and update
+###                 an LCD display attached to the Raspberry Pi
+####
+##############################################################################
+from PCF8574 import PCF8574_GPIO
+from Adafruit_LCD1602_IDD import Adafruit_CharLCD
 from bs4 import BeautifulSoup
 from time import sleep
 import requests
@@ -26,7 +23,7 @@ def get_html_data(index_list, url):
     for x in index:
         new_url = url.format(x, x)
         r = requests.get(new_url)
-        html_data[x] = r.text    
+        html_data[x] = r.text
     return html_data
 
 def parse_html(html_data):
@@ -58,6 +55,7 @@ def loop():
         html_data = get_html_data(index, url)
         stock_ticker_data = parse_html(html_data)
 
+<<<<<<< HEAD
         # write message
         for stock in stock_ticker_data:
             line1, line2 = formatter(stock)
@@ -83,3 +81,41 @@ if __name__ == '__main__':
         KeyboardInterrupt
         lcd.clear()
         lcd.close()
+=======
+        for stock in stock_ticker_data:
+            line1, line2 = formatter(stock)
+
+            # display message
+            lcd.set_cursor(0,0)  # set cursor position
+            lcd.message(line1 + '\n')
+            lcd.message(line2)
+            sleep(5)
+
+    lcd.message('Time is Up!')
+
+def destroy():
+    lcd.clear()
+
+PCF8574_address = 0x27  # I2C address of the PCF8574 chip.
+PCF8574A_address = 0x3F  # I2C address of the PCF8574A chip.
+# Create PCF8574 GPIO adapter.
+try:
+	mcp = PCF8574_GPIO(PCF8574_address)
+except:
+	try:
+		mcp = PCF8574_GPIO(PCF8574A_address)
+	except:
+		print ('I2C Address Error !')
+		exit(1)
+
+# Create LCD, passing in MCP GPIO adapter.
+lcd = Adafruit_CharLCD(pin_rs=0, pin_e=2, pins_db=[4,5,6,7], GPIO=mcp)
+
+if __name__ == '__main__':
+    print ('Program is starting ... ')
+
+    try:
+        loop()
+    except KeyboardInterrupt:
+        destroy()
+>>>>>>> 59355d441c10fc702dc4524d8ca2f1a72854f60d
