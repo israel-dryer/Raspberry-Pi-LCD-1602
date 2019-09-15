@@ -22,3 +22,7 @@ Build a live updated stock ticker that pulls stocks or indexes of your choice fr
 
 ## (6) Live Sports Scores
 Coming soon...
+
+## (7) LCD Ship Game
+Coming soon...
+
