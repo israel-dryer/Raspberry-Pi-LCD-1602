@@ -5,7 +5,8 @@
 Instructions for setting up your Raspberry Pi to accept the LCD1602, as well as hooking up your LCD1602 and running a test program  
 
 ## (2) End of the World Timer
-You should be prepared for the end... you can be with this Raspberry Pi **End of the World** timer.
+Are you prepared for the **END OF THE WORLD**??  
+With this timer... you can be. [Download the code](02-Timer/lcd_timer.py) to get started.
 
 ![image](02-Timer/timer.jpg)
 
