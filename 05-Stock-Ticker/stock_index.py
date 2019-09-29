@@ -1,8 +1,10 @@
 ######################################################################
+#
 #   Filename      : stock_ticker.py
 #   Description   : Display stock-index prices from yahoo finance
 #   Author        : Israel Dryer
-#   Modified      : 2019-09-14
+#   Modified      : 2019-09-28
+#
 ######################################################################
 #
 #   Install the required libraries
@@ -17,16 +19,18 @@ from time import sleep
 import requests
 import lxml
 
-index = ['^GSPC', '^DJI', '^IXIC', '^RUT'] # S&P 500, DOW 30, NASDAQ, Russell 2000
+# add to this list or replace with any stock you want on Yahoo! Finance
+index = {'^GSPC':'S&P 500', '^DJI':'DOW 30', '^IXIC':'NASDAQ', '^RUT':'Russell 2000'} 
 url = 'https://finance.yahoo.com/quote/{}?p={}'
 
 def get_html_data(index_list, url):
     # lookup index prices and save to dictionary
     html_data = {}
-    for x in index:
-        new_url = url.format(x, x)
+    for k,v in index.items():
+        new_url = url.format(k, k)
         r = requests.get(new_url)
-        html_data[x] = r.text
+        # {stock name: stock price}
+        html_data[v] = r.text
     return html_data
 
 def parse_html(html_data):
@@ -72,7 +76,6 @@ def loop():
 lcd = CharLCD(i2c_expander='PCF8574', address=0x27)
 
 if __name__ == '__main__':
-    print('Program is starting...')
     lcd.clear()
     lcd.home()
     lcd.write_string('Loading...')
