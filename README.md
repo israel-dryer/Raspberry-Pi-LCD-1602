@@ -5,8 +5,8 @@
 Instructions for setting up your Raspberry Pi to accept the LCD1602, as well as hooking up your LCD1602 and running a test program  
 
 ## (2) End of the World Timer
-Are you prepared for the **END OF THE WORLD**??  
-With this timer... you can be. [Download the code](02-Timer/lcd_timer.py) to get started.
+Are you prepared for the **END OF THE WORLD**?? With this timer... you can be (JUST A JOKE... .OBVIOUSLY)  
+[Download the code](02-Timer/lcd_timer.py) to get started.
 
 ![image](02-Timer/timer.jpg)
 
@@ -14,7 +14,12 @@ With this timer... you can be. [Download the code](02-Timer/lcd_timer.py) to get
 Coming soon... 
 
 ## (4) News Headline Scroller
-Coming soon...
+Get streaming top headlines with the NewsAPI to your Raspberry Pi. Still a work in progress. But here are some screen shots of what I have so far.
+You will need to get setup with a NewsAPI key if you haven't already. It's not hard. [Here's a video](https://youtu.be/oUuIVJ96JsI) on how to get started with NewsAPI.
+
+![image](04-News-Headlines/stream1.jpg)
+
+![image](04-News-Headlines/stream2.jpg)
 
 ## (5) Stock Ticker
 Build a live updated stock ticker that pulls stocks or indexes of your choice from Yahoo! Finance.
@@ -24,6 +29,4 @@ Build a live updated stock ticker that pulls stocks or indexes of your choice fr
 ## (6) Live Sports Scores
 Coming soon...
 
-## (7) LCD Ship Game
-Coming soon...
 
