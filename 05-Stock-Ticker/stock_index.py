@@ -11,6 +11,9 @@
 #   https://rplcd.readthedocs.io/en/stable/getting_started.html#
 #   sudo pip3 install RPLCD
 #   sudo pip3 install smbus
+#   sudo pip3 install bs4
+#   sudo pip3 install lxml
+#   sudo pip3 install requests
 #
 ######################################################################
 from RPLCD.i2c import CharLCD
